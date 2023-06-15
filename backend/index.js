@@ -121,8 +121,7 @@ console.log('Received data from client:', data);
 
  socket.on('customers_data',(data)=>{
 
-
-
+console.log(data)
 
 Orders.aggregate([
   { "$match": { order_id: data } },

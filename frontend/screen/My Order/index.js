@@ -13,9 +13,9 @@ import ModalOrders from '../../component/ModalOrders';
 
 
 function MyOrders  () {
-    const {RiderData,modal,SetModal,customerdata,SetCustomerData,SetOrderNumber,currentStatus,SetCurrentStatus}=useContext(UserContext)
+    const {RiderData,modal,SetModal,customerdata,SetCustomerData,SetOrderNumber,currentStatus,SetCurrentStatus,orderLength,SetOrdersLength}=useContext(UserContext)
     const [orderStatus,SetOrderStatus]=useState(1);
-    const socket=io.connect("http://192.168.7.205:9000/");
+    const socket=io.connect("http://192.168.7.216:9000/");
 
     const [serachValue,SetSerachValue]=useState("");
     const [assignedOrders,SetAssignedOrders]=useState([])
@@ -28,18 +28,28 @@ function MyOrders  () {
     const Orders=(data1)=>{
   //console.log(currentStatus)
 
-      SetModal(true)
-
+    
 
       socket.emit('customers_data', data1);
       SetOrderNumber(data1);
+      SetModal(true)
 
-      const filtered = RiderData.filter(item => item.order_id  == data1); // Filter numbers greater than 3
-      //console.log(filtered[0].orders)
+      const filtered = RiderData.filter(item => item.order_id  == data1);
+      SetOrdersLength(filtered.length)
 
 
 
     }
+
+useEffect(()=>{
+
+  if(customerdata.length!=0)
+  {
+  
+  }
+
+},[customerdata])
+    
 
 
     useEffect(()=>{
@@ -47,9 +57,7 @@ function MyOrders  () {
 
 
       socket.on('customer_data', data => {
-
-
-
+   
         SetCustomerData(data[0].customers);
      
     
@@ -174,7 +182,7 @@ routeOrders.map((item) => (
   <View key={item.id}>
 
 
-<OrderButton onPress={() => { Orders(item.order_id); SetCurrentStatus(item.status) }}   status={item.status}  label={item.order_id}/>
+<OrderButton onPress={() => { Orders(item.order_id); SetCurrentStatus(item.status); console.log(customerdata) }}   status={item.status}  label={item.order_id}/>
   </View>
 )):
 null

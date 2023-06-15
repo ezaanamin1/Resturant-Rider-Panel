@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View,TouchableOpacity} from 'react-native';
+import {Alert, Modal, StyleSheet, Text, Pressable, View,TouchableOpacity,Image} from 'react-native';
 import { UserContext } from '../context/context';
 import { useContext } from 'react';
 import axios from 'axios';
@@ -11,7 +11,25 @@ import { Linking } from 'react-native';
 import {BACKEND} from "@env"
 
 const ModalOrders = ({status}) => {
-    const {modal,SetModal,OrderNumber,customerdata}=useContext(UserContext)
+
+  const [name,SetName]=useState("")
+  const [address,SetAddress]=useState("")
+
+
+  useEffect(()=>{
+
+    
+
+    if(customerdata.length!=0)
+    {
+      SetName(customerdata[0].name)
+      SetAddress(customerdata[0].address)
+    }
+
+
+
+  },[customerdata])
+    const {modal,SetModal,OrderNumber,customerdata,orderLength}=useContext(UserContext)
 
     const convertAddressToCoordinates = async () => {
       try {
@@ -106,8 +124,24 @@ const ModalOrders = ({status}) => {
             color="#000"
           />
         </TouchableOpacity>
+        <Image    style={{ width: 100, height: 100, alignSelf: 'center' }}
+      source={require("../assets/Logo.png")}/> 
+              <Text style={styles.modalText}>
 
-              <Text style={styles.modalText}>Hello World!</Text>
+
+<Text style={styles.heading}>Order's Details</Text>
+
+
+              </Text>
+              <View>
+
+<Text>Number of Orders: {orderLength}</Text>
+
+<Text>Customers Name: {name}</Text>
+<Text style={{marginBottom:10}}>Customers Address: {address}</Text>
+
+</View>
+
               <View style={{display:"flex",flexDirection:"row",marginLeft:22}}>
 
               { status=="assigned"?
@@ -160,17 +194,7 @@ const ModalOrders = ({status}) => {
 
 
 { status=="delivered"?
-              <View>
-
-                  <Pressable
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() =>handleSucess()}>
-  
-  
-                  <Text style={styles.textStyle}>Show Order Details</Text>
-                </Pressable>
-                </View>
-  
+        null
 
 :null
 
@@ -186,6 +210,11 @@ const ModalOrders = ({status}) => {
   };
   
   const styles = StyleSheet.create({
+    heading:{
+textAlign:"center",
+fontSize:20,
+
+    },
     centeredView: {
       flex: 1,
       justifyContent: 'center',

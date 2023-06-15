@@ -16,7 +16,7 @@ const Login = ({ navigation }) => {
   
 
 
-  const socket=io.connect("http://192.168.7.205:9000/");
+  const socket=io.connect("http://192.168.7.216:9000/");
 
   socket.on('connection', data => {
 
@@ -54,11 +54,10 @@ const Login = ({ navigation }) => {
 
   const handleClick = async (email,password1) => {
 
-    const response = await axios.post(`http://192.168.7.205:9000/riders/login`, {email:email,password:password1})
+    const response = await axios.post(`http://192.168.7.216:9000/riders/login`, {email:email,password:password1})
   
 
     .catch((error) => console.log('Error: ', error))
-    console.log(response.data)
     if(response.data!='Wrong password' || response.data!='Wrong username')
     {
       // console.log(response.data.information)
