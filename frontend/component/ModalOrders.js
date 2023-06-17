@@ -6,14 +6,22 @@ import axios from 'axios';
 import { AntDesign } from 'react-native-vector-icons';
 import { Icon } from 'react-native-elements';
 import { Linking } from 'react-native';
+import io from "socket.io-client"
+
 
 
 import {BACKEND} from "@env"
 
 const ModalOrders = ({status}) => {
+  const socket=io.connect("http://192.168.7.216:9000/");
+
 
   const [name,SetName]=useState("")
   const [address,SetAddress]=useState("")
+
+
+
+
 
 
   useEffect(()=>{
@@ -65,7 +73,7 @@ const ModalOrders = ({status}) => {
 
     const handleSucess = async () => {
 
-      const response = await axios.post(`http://192.168.7.205:9000/riders/accept`, {order_number:OrderNumber})
+      const response = await axios.post(`http://192.168.7.216:9000/riders/accept`, {order_number:OrderNumber})
       // .catch((error) => console.log('Error: ', error))
       if(response.data=="Sucess")
       {
@@ -78,7 +86,7 @@ const ModalOrders = ({status}) => {
     }
     const handleReject = async () => {
 
-      const response = await axios.post(`http://192.168.7.205:9000/riders/reject`, {order_number:OrderNumber})
+      const response = await axios.post(`http://192.168.7.216:9000/riders/reject`, {order_number:OrderNumber})
       // .catch((error) => console.log('Error: ', error))
       if(response.data=="Sucess")
       {
@@ -91,7 +99,7 @@ const ModalOrders = ({status}) => {
 
     const handleOrder = async () => {
   
-      const response = await axios.post(`http://192.168.7.205:9000/riders/route`, {order_number:OrderNumber})
+      const response = await axios.post(`http://192.168.7.216:9000/riders/route`, {order_number:OrderNumber})
       // .catch((error) => console.log('Error: ', error))
 
 

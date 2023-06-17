@@ -13,7 +13,7 @@ import ModalOrders from '../../component/ModalOrders';
 
 
 function MyOrders  () {
-    const {RiderData,modal,SetModal,customerdata,SetCustomerData,SetOrderNumber,currentStatus,SetCurrentStatus,orderLength,SetOrdersLength}=useContext(UserContext)
+    const {SetRiderData,current_id,SetCurrentID,RiderData,modal,SetModal,customerdata,SetCustomerData,SetOrderNumber,currentStatus,SetCurrentStatus,orderLength,SetOrdersLength,user}=useContext(UserContext)
     const [orderStatus,SetOrderStatus]=useState(1);
     const socket=io.connect("http://192.168.7.216:9000/");
 
@@ -21,6 +21,18 @@ function MyOrders  () {
     const [assignedOrders,SetAssignedOrders]=useState([])
     const [routeOrders,SetRoutesOrders]=useState([])
     const [delivered,Setdelivered]=useState([])
+
+
+
+
+useEffect(()=>{
+
+  socket.emit('customEventName', current_id);
+
+
+},[socket])
+
+
 
 
 
@@ -34,12 +46,22 @@ function MyOrders  () {
       SetOrderNumber(data1);
       SetModal(true)
 
-      const filtered = RiderData.filter(item => item.order_id  == data1);
-      SetOrdersLength(filtered.length)
+
+
 
 
 
     }
+
+    const hi=()=>{
+
+      console.log(customerdata)
+
+      // const filtered = RiderData.filter(item => item.order_id  == data1);
+      // SetOrdersLength(filtered.length)
+ 
+    }
+
 
 useEffect(()=>{
 
@@ -59,13 +81,15 @@ useEffect(()=>{
       socket.on('customer_data', data => {
    
         SetCustomerData(data[0].customers);
-     
+    
+
+
     
       });
 
 
 
-},[socket])
+},[customerdata])
 
 
 
@@ -168,7 +192,7 @@ assignedOrders.map((item) => (
   <View key={item.id}>
 
 
-<OrderButton  onPress={() => { Orders(item.order_id); SetCurrentStatus(item.status) }}  status={item.status} label={item.order_id}/>
+<OrderButton  onPress={() => { Orders(item.order_id); SetCurrentStatus(item.status); }}  status={item.status} label={item.order_id}/>
   </View>
 )):
 null

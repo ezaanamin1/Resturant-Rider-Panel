@@ -59,25 +59,6 @@ socket.on("disconnect",()=>{
 console.log("user disconnected",socket.id)
 
 })
-const ObjectId = mongoose.Types.ObjectId;
-const change=Rider.watch();
-const change1=Orders.watch();
-
-change.on('change', (change) => {
-
-
-  io.sockets.emit('customEventName');
-
-
-})
-
-change1.on('change', (change) => {
-
-  io.sockets.emit('customEventName');
-
-
-
-})
 
 
 
@@ -113,7 +94,30 @@ console.log('Received data from client:', data);
   }
 }
 )
+const changeStream=Orders.watch();
 
+
+changeStream.on('change', (change) => {
+
+  console.log(change)
+  if (change.operationType === 'insert') {
+    const latestEntry = change.fullDocument;
+
+    console.log(latestEntry)
+
+    // Emit the latest entry to the connected clients
+    // io.emit('updateField', latestEntry);
+
+  }
+  if (change.operationType === 'update') {
+    const updatedEntry = change.fullDocument;
+    console.log(updatedEntry)
+
+    // Emit the updated entry to the connected clients
+    // io.emit('updateField', updatedEntry);
+  }
+
+})
 
 
 
@@ -121,7 +125,7 @@ console.log('Received data from client:', data);
 
  socket.on('customers_data',(data)=>{
 
-console.log(data)
+console.log(data,'ezaan')
 
 Orders.aggregate([
   { "$match": { order_id: data } },
@@ -159,6 +163,10 @@ else
 
 
 });
+
+
+
+
 
 
 

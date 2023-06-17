@@ -27,9 +27,10 @@ export default function App() {
   const [currentStatus,SetCurrentStatus]=useState("")
   const [Email,SetEmail]=useState("")
   const [orderLength,SetOrdersLength]=useState([])
+  const [current_id,SetCurrentID]=useState("")
 
 
-  const  value={user,SetUser,RiderData,SetRiderData,toggleState, setToggleState,modal,SetModal,customerdata,SetCustomerData,OrderNumber,SetOrderNumber,currentStatus,SetCurrentStatus,Email,SetEmail,orderLength,SetOrdersLength}
+  const  value={current_id,SetCurrentID,user,SetUser,RiderData,SetRiderData,toggleState, setToggleState,modal,SetModal,customerdata,SetCustomerData,OrderNumber,SetOrderNumber,currentStatus,SetCurrentStatus,Email,SetEmail,orderLength,SetOrdersLength}
 
   return (   
   <UserContext.Provider value={value}>

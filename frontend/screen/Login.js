@@ -29,7 +29,7 @@ const Login = ({ navigation }) => {
 
 
 
-  const {SetUser,RiderData,SetRiderData}=useContext(UserContext)
+  const {SetUser,RiderData,SetRiderData,current_id,SetCurrentID}=useContext(UserContext)
   const [error,SetError]=useState("")
  
   const validationSchema = Yup.object().shape({
@@ -63,6 +63,7 @@ const Login = ({ navigation }) => {
       // console.log(response.data.information)
       SetUser(response.data.information)
       socket.emit('customEventName', response.data.information._id);
+      SetCurrentID(response.data.information._id)
 
 
       navigation.navigate('About')
